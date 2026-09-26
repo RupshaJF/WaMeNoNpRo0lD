@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rupsha Public Welfare Foundation</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Poppins:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="icon" type="image/png" href="favicon.png">
+
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rupshajonokollanfoundation.vercel.app/meeting">
+    <meta property="og:title" content="রূপসা জনকল্যাণ ফাউন্ডেশন | মিটিং ">
+    <meta property="og:description" content="অসহায় ও দরিদ্র মানুষের পাশে দাঁড়িয়ে একটি সুন্দর ও মানবিক সমাজ গড়ে তোলাই আমাদের লক্ষ্য। আমাদের কার্যক্রমে যুক্ত হোন বা অবদান রাখুন।">
+    <meta property="og:image" content="meta-banner.png">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="রূপসা জনকল্যাণ ফাউন্ডেশন">
+    <meta name="twitter:description" content="অসহায় ও দরিদ্র মানুষের পাশে দাঁড়িয়ে একটি সুন্দর ও মানবিক সমাজ গড়ে তোলাই আমাদের লক্ষ্য।">
+    <meta name="twitter:image" content="meta-banner.png">
+
+    
+</head>
+<body>
+
+
+
+<style>
+  /* প্রিমিয়াম ডার্ক মেমরি থিম */
+  #splash-screen {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100vh;
+    background: radial-gradient(circle at center, #1f2937 0%, #030712 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s ease;
+  }
+
+  .fade-out {
+    opacity: 0;
+    transform: scale(1.1); /* যাওয়ার সময় হালকা জুম-ইন ইফেক্ট */
+    pointer-events: none;
+  }
+
+  .animation-wrapper { 
+    text-align: center; 
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ব্যাকগ্রাউন্ডের মায়াবী আলো */
+  .memory-glow {
+    position: absolute;
+    top: 40%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.12) 0%, transparent 60%);
+    border-radius: 50%;
+    z-index: -1;
+    animation: pulseGlow 3s infinite ease-in-out;
+  }
+
+  /* ছবি দেখানোর প্রিমিয়াম গ্লাস ফ্রেম */
+  .image-frame {
+    width: 320px;
+    height: 220px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 15px rgba(251, 191, 36, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: #000;
+  }
+
+  /* স্লাইডারের ট্র্যাক - ৫টি ছবির জন্য ৫০০% প্রস্থ */
+  .slider-track {
+    display: flex;
+    width: 500%; 
+    height: 100%;
+    /* ৫ সেকেন্ডের মধ্যে অ্যানিমেশন শেষ হবে */
+    animation: slideMemories 2.5s ease-in-out forwards; 
+  }
+
+  /* প্রতিটি ছবির স্টাইল */
+  .slider-track img {
+    width: 20%; /* ৫০০% এর ২০% = ১০০% (একটি ফ্রেমের সমান) */
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.9) contrast(1.1);
+  }
+
+  /* টেক্সট ডিজাইন */
+  .loading-text { 
+    color: #40f5ff; 
+    margin-top: 5px; 
+    letter-spacing: 3px; 
+    font-family: 'Montserrat', 'Segoe UI', sans-serif; 
+    font-weight: bold;
+    font-size: 1.4rem;
+    text-shadow: 0 0 10px rgba(250, 204, 21, 0.4);
+  }
+
+  /* প্রোগ্রেস বার কন্টেইনার */
+  .progress-container {
+    width: 280px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    margin: 20px auto 0 auto;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+  }
+
+  .progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #ca8a04, #facc15);
+    box-shadow: 0 0 12px #facc15;
+    border-radius: 20px;
+    transition: width 0.05s linear;
+  }
+
+  .percentage-text {
+    color: #facc15;
+    font-family: monospace;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+  }
+
+  /* --- সিনেমাটিক স্লাইড অ্যানিমেশন --- */
+  /* ছবিগুলো ধাপে ধাপে স্লাইড হবে এবং কিছুক্ষণ দাঁড়াবে */
+  @keyframes slideMemories {
+    0%, 15% { transform: translateX(0); }             /* ছবি ১ */
+    20%, 35% { transform: translateX(-20%); }         /* ছবি ২ */
+    40%, 55% { transform: translateX(-40%); }         /* ছবি ৩ */
+    60%, 75% { transform: translateX(-60%); }         /* ছবি ৪ */
+    80%, 100% { transform: translateX(-80%); }        /* ছবি ৫ */
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+   
+
+<div id="splash-screen">
+  <div class="memory-glow"></div>
+  <div class="animation-wrapper">
+    
+    <!-- ছবির ফ্রেম -->
+    <div class="image-frame">
+      <div class="slider-track">
+        <!--  ৫টি ছবির  -->
+        
+        
+        
+        
+        <img src="https://rupshajf.vercel.app/gallery/national-anthem-all-team.webp" alt="Memory 1">
+        <img src="https://rupshajf.vercel.app/gallery/win-team.webp" alt="Memory 2">
+        <img src="https://rupshajf.vercel.app/gallery/lost-team.webp" alt="Memory 3">
+        <img src="https://rupshajf.vercel.app/gallery/team-trophy.webp" alt="Memory 4">
+        
+        
+        <img src="https://rupshajf.vercel.app/gallery/IMG_20260320_234348.jpg" alt="Memory 5">
+      </div>
+    </div>
+
+    <h2 class="loading-text"> আমাদের কার্যক্রম এক নজরে</h2>
+    
+    <div class="progress-container">
+      <div id="progress-bar" class="progress-bar"></div>
+    </div>
+    <span id="percentage" class="percentage-text">0%</span>
+
+  </div>
+</div>
+
+<script>
+  (function() {
+    const progressBar = document.getElementById('progress-bar');
+    const percentageText = document.getElementById('percentage');
+    const splash = document.getElementById('splash-screen');
+
+    // নির্দিষ্ট ৫ সেকেন্ড (5000 মিলিসেকেন্ড) টার্গেট
+    const totalDuration = 3000; 
+    const updateInterval = 50; // প্রতি ৫০ মিলিসেকেন্ডে আপডেট হবে
+    const step = 100 / (totalDuration / updateInterval); 
+    
+    let progress = 0;
+
+    // ৫ সেকেন্ডে ঠিক ১০০% হওয়ার ক্যালকুলেশন
+    const timer = setInterval(() => {
+      progress += step;
+      
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(timer);
+        hideSplashScreen();
+      }
+
+      const currentProgress = Math.floor(progress);
+      progressBar.style.width = currentProgress + '%';
+      percentageText.textContent = currentProgress + '%';
+    }, updateInterval);
+
+    // ৫ সেকেন্ড পার হওয়ার পর স্মুথলি হাইড করার ফাংশন
+    function hideSplashScreen() {
+      splash.classList.add('fade-out');
+      setTimeout(() => {
+        splash.style.display = 'none';
+      }, 800); // অ্যানিমেশন শেষ হতে ৮০০ms সময় নেবে
+    }
+  })();
+</script>
+
+
+
+
+
+
+
+<nav class="ultra-nav">
+  <div class="nav-center">
+    <a href="/subscribe/" class="smart-sub-btn">
+      <span class="btn-content">সাবস্ক্রাইব করুন</span>
+      <div class="shimmer"></div>
+    </a>
+  </div>
+</nav>
+    
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+    
+    <div id="auth-screen">
+        <div class="auth-container">
+            <img src="/rupsha_jonokollan_foundation.webp/" alt="Logo" class="logo-img">
+            
+            <div id="login-form" style="display: block;">
+                <h2>Login</h2>
+                <p>আপনার যদি আগে ইমেইল/গুগল দিয়ে রেজিষ্টেশন না থাকে তবে অন্তত একবার রেজিষ্টেশন করে নিন </p>
+
+
+
+
+<div class="audio-container">
+    <p>অডিও শুনুন</p>
+    <audio controls>
+        <source src="meeting.mp3" type="audio/mpeg">
+        আপনার ব্রাউজারটি অডিও সাপোর্ট করছে না।
+    </audio>
+</div>
+
+
+
+                
+                <input type="email" id="login-email" class="auth-input" placeholder="Your email address">
+                <div class="pass-wrapper">
+                    <input type="password" id="login-pass" class="auth-input" placeholder="Your password">
+                    <i class="fas fa-eye toggle-icon" onclick="togglePassword('login-pass', this)"></i>
+                </div>
+                <button class="auth-btn btn-primary" id="loginSubmit">লগইন</button>
+                
+                <div class="divider"><span>অথবা</span></div>
+                
+                <button class="auth-btn btn-google" id="googleLoginBtn">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                    Google দিয়ে লগইন
+                </button>
+
+                <button class="btn-link" onclick="showForm('signup')">Register if you don't have an account.</button>
+                <button class="btn-link" onclick="showForm('reset')">Forget password?</button>
+            </div>
+
+            <div id="signup-form">
+                <h2>Registration</h2>
+                <input type="text" id="signup-name" class="auth-input" placeholder="Your name">
+                <input type="email" id="signup-email" class="auth-input" placeholder="Your email address">
+                <div class="pass-wrapper">
+                    <input type="password" id="signup-pass" class="auth-input" placeholder="Enter a password you can remember.">
+                    <i class="fas fa-eye toggle-icon" onclick="togglePassword('signup-pass', this)"></i>
+                </div>
+                <button class="auth-btn btn-primary" id="signupSubmit" style="background: #188038;">registration</button>
+                <button class="btn-link" onclick="showForm('login')">Login</button>
+            </div>
+
+            <div id="reset-form">
+                <h2>Forget Password</h2>
+                <input type="email" id="reset-email" class="auth-input" placeholder="Give your email address">
+                <button class="auth-btn btn-primary" id="resetSubmit">Send link</button>
+                <button class="btn-link" onclick="showForm('login')">Home</button>
+            </div>
+            <p id="auth-msg" style="font-size: 13px; margin-top: 10px; display: none; padding: 10px; border-radius: 8px; line-height: 1.4;"></p>
+        </div>
+    </div>
+
+    <button class="menu-toggle-btn" onclick="toggleSideMenu()">☰</button>
+
+    <div class="menu-overlay" id="overlay" onclick="toggleSideMenu()"></div>
+
+    <nav class="side-menu" id="sideMenu">
+        <a href="/index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="/donate/"><i class="fas fa-hand-holding-heart"></i> Donation</a>
+        <a href="/member/"><i class="fas fa-users"></i>permanent member</a>
+        <a href="/verify.html"><i class="fa-solid fa-magnifying-glass"></i>verify member</a>
+        <a href="/from/"><i class="fa-solid fa-file-lines"></i>application form</a>
+        <a href="index.html"><i class="fas fa-video"></i> Meeting</a>
+        <a href="/pro.exam/"><i class="fas fa-graduation-cap"></i> Student Portal</a>
+    </nav>
+
+    <div id="main-content">
+        <header>
+            <div class="top-controls">
+                <button class="control-btn" onclick="toggleDarkMode()" id="themeIcon"><i class="fas fa-moon"></i></button>
+                <button class="control-btn" onclick="logoutUser()" style="border-color:#ff4d4d; color:#ff4d4d;">Logout</button>
+            </div>
+            <img src="/rupsha_jonokollan_foundation.webp/" alt="Logo" class="logo-img">
+            <div class="user-welcome" id="userNameDisplay">Processing...</div>
+            <h1 style="color:white;">রূপসা জনকল্যাণ ফাউন্ডেশন লাইভ মিটিং সেকশন</h1>
+        </header>
+
+
+
+
+
+
+        
+        <main class="dashboard-main">
+            <div class="meet-card">
+                <div class="status-badge">
+                    <div class="status-dot"></div>
+                    <span class="status-text">Active now <span id="userLiveBadge">...</span></span>
+                </div>
+
+                <div class="meet-icon-circle">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h2>Join live conference</h2>
+                <p> 
+            <strong>  মিটিংয়ে অংশগ্রহণ করার জন্য আমাদের 2টা মাধ্যম আছে যখন মিটিং থাকবে তখন লিংক গুলা সক্রিয় থাকবে তাছাড়া লিংকগুলা অক্রিয় অবস্থায় থাকবে। join এ ক্লিক করে অংশগ্রহণ করুন। তবে এখন কোন মিটিং নেই তাই host উপস্থিত নেই। যখন মিটিং থাকবে তখন তারিখ এবং সময় উল্লেখ্য থাকবে। রূপসা জনকল্যাণ ফাউন্ডেশনের সাথে থাকার জন্য ধন্যবাদ।</strong></p>
+                    
+                    
+                <div class="btn-stack">
+                    <a class="join-btn google-meet" href="https://meet.google.com/ovr-zebh-xrc" target="_blank">
+                        <i class="fab fa-google"></i> JOIN GOOGLE MEET
+                    </a>
+                    <a class="join-btn zoom-meet" href="https://us05web.zoom.us/j/3364599214?pwd=rfznlEZujHOrQ1hg8subGX8TanM1xS.1&omn=87521248706" target="_blank">
+                        <i class="fas fa-video"></i> JOIN ZOOM APP
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2026 All rights reserved with RJ Foundation</p>
+        </footer>
+    </div>
+
+    <script type="module" src="script.js"></script>
+
+    <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        Tawk_API.customStyle = {
+            visibility : {
+                desktop : { yOffset : 100 },
+                mobile : { yOffset : 75 }
+            }
+        };
+        (function(){
+            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+            s1.async=true;
+            s1.src='https://embed.tawk.to/69dbb84d50bab81c348e073d/1jm14fs2g';
+            s1.charset='UTF-8';
+            s1.setAttribute('crossorigin','*');
+            s0.parentNode.insertBefore(s1,s0);
+        })();
+    </script>
+    </body>
+</html>

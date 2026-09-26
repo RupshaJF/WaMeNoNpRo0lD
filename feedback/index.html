@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+
+<!-- ম্যানিফেস্ট ফাইল লিঙ্ক -->
+<link rel="manifest" href="manifest.json">
+
+<!-- সার্ভিস ওয়ার্কার রেজিস্টার করা -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('Service Worker Registered!'))
+        .catch(err => console.log('Service Worker Failed!', err));
+    });
+  }
+</script>
+
+
+
+
+
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rupsha jonokollan foundation - feedback section</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rupshajonokollanfoundation.vercel.app/feedback">
+    <meta property="og:title" content="রূপসা জনকল্যাণ ফাউন্ডেশন | ফিডব্যাক পেজ">
+    <meta property="og:description" content="অসহায় ও দরিদ্র মানুষের পাশে দাঁড়িয়ে একটি সুন্দর ও মানবিক সমাজ গড়ে তোলাই আমাদের লক্ষ্য। আমাদের কার্যক্রমে যুক্ত হোন বা অবদান রাখুন।">
+    <meta property="og:image" content="meta-banner.png">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="রূপসা জনকল্যাণ ফাউন্ডেশন">
+    <meta name="twitter:description" content="অসহায় ও দরিদ্র মানুষের পাশে দাঁড়িয়ে একটি সুন্দর ও মানবিক সমাজ গড়ে তোলাই আমাদের লক্ষ্য।">
+    <meta name="twitter:image" content="meta-banner.png">
+
+  
+    <style>
+        /* Base Styling */
+        body { 
+            font-family: 'Hind Siliguri', 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            margin: 0; 
+            padding: 40px 20px; 
+            color: #334155;
+            min-height: 100vh;
+        }
+
+        .review-form { 
+            max-width: 650px; 
+            margin: 0 auto; 
+            padding: 40px; 
+            background: #ffffff; 
+            border-radius: 24px; 
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1); 
+            border: 1px solid rgba(255,255,255,0.8);
+            position: relative;
+        }
+
+        .header-title {
+            text-align: center; color: #0f172a; font-weight: 700; font-size: 32px;
+            margin-bottom: 5px; letter-spacing: -0.5px;
+        }
+        .header-subtitle { text-align: center; color: #64748b; font-size: 15px; margin-bottom: 35px; }
+
+        /* Input & Button Styling */
+        .verify-box { text-align: center; }
+        .input-group { position: relative; margin-top: 20px; }
+        .input-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 18px; }
+
+        .verify-input { 
+            width: 100%; padding: 16px 16px 16px 50px; border-radius: 16px; 
+            border: 2px solid #e2e8f0; background: #f8fafc; outline: none; 
+            transition: all 0.3s ease; box-sizing: border-box; font-size: 16px; font-family: inherit;
+        }
+        .verify-input:focus { border-color: #059669; background: #ffffff; box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1); }
+
+        .primary-btn { 
+            width: 100%; background: linear-gradient(135deg, #059669 0%, #047857 100%); 
+            color: white; padding: 16px; border: none; border-radius: 16px; font-size: 17px;
+            font-weight: 600; cursor: pointer; margin-top: 20px; transition: all 0.3s ease; 
+            display: flex; align-items: center; justify-content: center; gap: 10px; font-family: inherit;
+        }
+        .primary-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.4); }
+        .primary-btn:disabled { background: #94a3b8; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* User Info Section */
+        .user-info { 
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 25px; padding: 15px 20px; background: #f8fafc; 
+            border-radius: 16px; border: 1px solid #e2e8f0; gap: 15px; 
+        }
+        .user-profile-left { display: flex; align-items: center; gap: 15px; flex: 1; min-width: 0; }
+        .user-img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #10b981; padding: 2px; background: white; object-fit: cover; flex-shrink: 0; }
+        .logout-btn { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 14px; font-weight: 600; padding: 8px 12px; border-radius: 8px; transition: 0.3s; flex-shrink: 0; }
+        .logout-btn:hover { background: #fef2f2; }
+
+        /* Star Rating & Textarea */
+        .rating-container { text-align: center; margin-bottom: 25px; }
+        .rating-label { font-weight: 600; color: #475569; margin-bottom: 12px; display: block; font-size: 18px;}
+        .star-rating { display: flex; justify-content: center; gap: 10px; cursor: pointer; font-size: 38px; }
+        .star-rating span { color: #cbd5e1; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .star-rating span:hover, .star-rating span.active { color: #fbbf24; transform: scale(1.15) translateY(-2px); text-shadow: 0 5px 15px rgba(251, 191, 36, 0.4); }
+
+        textarea { 
+            width: 100%; height: 140px; padding: 18px; border-radius: 16px; 
+            border: 2px solid #e2e8f0; background: #f8fafc; resize: none; box-sizing: border-box; 
+            font-family: inherit; font-size: 16px; transition: all 0.3s ease; line-height: 1.6;
+        }
+        textarea:focus { border-color: #059669; background: #ffffff; outline: none; box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1); }
+
+        /* Section Divider */
+        .section-divider { display: flex; align-items: center; text-align: center; margin: 45px 0 30px; color: #64748b; font-weight: 600; font-size: 18px; }
+        .section-divider::before, .section-divider::after { content: ''; flex: 1; border-bottom: 2px solid #e2e8f0; }
+        .section-divider::before { margin-right: 20px; }
+        .section-divider::after { margin-left: 20px; }
+
+        /* --- New Average Rating Summary Styling --- */
+        .rating-summary-card {
+            display: flex; gap: 30px; background: #f8fafc; padding: 25px; border-radius: 20px;
+            border: 1px solid #e2e8f0; margin-bottom: 30px; flex-wrap: wrap; align-items: center;
+        }
+        .summary-left { text-align: center; flex: 1; min-width: 150px; border-right: 2px solid #e2e8f0; padding-right: 20px;}
+        @media (max-width: 600px) { .summary-left { border-right: none; border-bottom: 2px solid #e2e8f0; padding-right: 0; padding-bottom: 20px; } }
+        .summary-left h1 { font-size: 52px; color: #0f172a; margin: 0; line-height: 1; font-weight: 700; }
+        .summary-stars { color: #fbbf24; font-size: 22px; margin: 12px 0; }
+        .summary-left p { color: #64748b; font-size: 15px; margin: 0; font-weight: 600;}
+        
+        .summary-right { flex: 2; min-width: 250px; display: flex; flex-direction: column; gap: 10px; }
+        .rating-bar-row { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; color: #475569;}
+        .bar-label { min-width: 45px; display: flex; align-items: center; justify-content: flex-end; gap: 5px; }
+        .bar-label i { color: #fbbf24; font-size: 13px;}
+        .progress-track { flex: 1; height: 12px; background: #e2e8f0; border-radius: 10px; overflow: hidden; position: relative; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #10b981 0%, #059669 100%); border-radius: 10px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bar-percent { min-width: 45px; text-align: left; color: #0f172a; font-size: 13px;}
+
+        /* Review Items */
+        .review-item { 
+            background: #ffffff; border-radius: 18px; padding: 24px; margin-bottom: 20px; 
+            border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: all 0.3s ease;
+        }
+        .review-item:hover { border-color: #cbd5e1; box-shadow: 0 10px 20px -5px rgba(0,0,0,0.08); transform: translateY(-2px); }
+
+        .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 15px; }
+        .reviewer-profile { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+        .reviewer-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; flex-shrink: 0; }
+        .review-name-box { display: flex; flex-direction: column; min-width: 0; }
+        .review-name { font-weight: 600; color: #1e293b; font-size: 16px; word-break: break-word; white-space: normal; }
+        .review-stars { color: #fbbf24; font-size: 14px; letter-spacing: 2px; flex-shrink: 0; display: flex; }
+        .review-text { font-size: 16px; color: #475569; line-height: 1.7; margin: 0; }
+        .review-date { font-size: 13px; color: #94a3b8; display: block; margin-top: 15px; font-weight: 500;}
+
+        /* Admin Reply */
+        .admin-reply-box {
+            background: #f1f5f9; border-left: 4px solid #3b82f6;
+            padding: 12px 16px; border-radius: 0 12px 12px 0;
+            margin-top: 15px; font-size: 15px; color: #334155;
+        }
+        .admin-reply-box strong { color: #1e293b; display: block; margin-bottom: 4px; font-size: 14px;}
+
+        /* Reactions */
+        .reaction-bar { display: flex; gap: 15px; margin-top: 15px; border-top: 1px solid #f1f5f9; padding-top: 15px; }
+        .reaction-btn { 
+            background: #f8fafc; border: 1px solid #e2e8f0; padding: 6px 12px; border-radius: 20px;
+            font-size: 13px; font-weight: 600; color: #64748b; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; gap: 5px; font-family: inherit;
+        }
+        .reaction-btn:hover { background: #f1f5f9; transform: scale(1.05); }
+        .reaction-btn.active-helpful { background: #ecfdf5; color: #059669; border-color: #a7f3d0; }
+        .reaction-btn.active-love { background: #fef2f2; color: #ef4444; border-color: #fecaca; }
+        .reaction-btn:active { transform: scale(0.9); }
+
+        /* Own Review Section Highlight */
+        .my-review-card { border: 2px solid #10b981; background: #ecfdf5; }
+        .action-buttons { display: flex; gap: 10px; margin-top: 15px; border-top: 1px solid #d1fae5; padding-top: 15px; }
+        .btn-action { padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
+        .btn-edit { background: #0f172a; color: white; }
+        .btn-edit:hover { background: #334155; }
+        .btn-delete { background: #fef2f2; color: #ef4444; border: 1px solid #fecaca; }
+        .btn-delete:hover { background: #fee2e2; }
+
+        /* Load More Button */
+        .load-more-btn {
+            display: block; width: fit-content; margin: 30px auto 0;
+            background: white; border: 2px solid #cbd5e1; color: #475569;
+            padding: 10px 25px; border-radius: 20px; font-weight: 600; cursor: pointer;
+            transition: 0.3s; font-family: inherit;
+        }
+        .load-more-btn:hover { border-color: #94a3b8; color: #0f172a; }
+
+        /* Skeleton Loading Animation */
+        .skeleton { animation: shimmer 1.5s infinite linear; background: linear-gradient(to right, #f1f5f9 40%, #e2e8f0 50%, #f1f5f9 60%); background-size: 200% 100%; border-radius: 8px; }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .skeleton-avatar { width: 40px; height: 40px; border-radius: 50%; }
+        .skeleton-text { height: 14px; margin-bottom: 10px; width: 100%; }
+        .skeleton-text.short { width: 40%; }
+
+        /* Thank You Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10000; opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: white; padding: 40px; border-radius: 24px; text-align: center;
+            max-width: 400px; width: 90%; transform: translateY(30px) scale(0.9);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.show .modal-content { transform: translateY(0) scale(1); }
+        .modal-icon {
+            width: 80px; height: 80px; background: #ecfdf5; color: #10b981;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 40px; margin: 0 auto 20px; box-shadow: 0 0 0 10px #d1fae5;
+        }
+
+        /* Toast & Scroll */
+        #toastBox { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { min-width: 280px; padding: 16px 20px; background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 12px; font-weight: 500; font-size: 15px; transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); border-left: 5px solid; }
+        .toast.show { transform: translateX(0); }
+        .toast.success { border-left-color: #10b981; color: #047857; }
+        .toast.error { border-left-color: #ef4444; color: #b91c1c; }
+        .toast.info { border-left-color: #3b82f6; color: #1d4ed8; }
+
+        #scrollTopBtn { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; background: #0f172a; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.4); border: none; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 999; }
+        #scrollTopBtn.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        #scrollTopBtn:hover { transform: translateY(-5px) scale(1.05); background: #334155; }
+        
+        .hidden { display: none !important; }
+
+
+
+
+
+
+
+
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
+:root {
+  --neon-glow: #00f2fe;
+  --neon-purple: #4facfe;
+}
+
+/* নেভিগেশন কন্টেইনার - যা বাটনকে মাঝখানে রাখবে */
+.ultra-nav {
+  position: fixed;
+  top: 20px; /* উপর থেকে একটু নিচে ফ্লোটিং স্টাইল */
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  pointer-events: none; /* যাতে পেজের অন্য কিছুতে ক্লিক করতে বাধা না দেয় */
+}
+
+/* স্মার্ট সাবস্ক্রাইব বাটন */
+.smart-sub-btn {
+  pointer-events: auto; /* বাটন ক্লিকযোগ্য করার জন্য */
+  position: relative;
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 100px;
+  color: black;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 1px;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* বাটন হোভার করলে যা হবে */
+.smart-sub-btn:hover {
+  transform: translateY(-5px) scale(1.05);
+  background: #fff;
+  color: #000;
+  box-shadow: 0 15px 40px rgba(79, 172, 254, 0.4);
+  border-color: transparent;
+}
+
+/* শিমার (Shimmer) ইফেক্ট - যা বাটনের ওপর দিয়ে লাইট পাস করবে */
+.shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: all 0.2s;
+  animation: shineLoop 4s infinite linear;
+}
+
+@keyframes shineLoop {
+  0% { left: -100%; }
+  20% { left: 100%; }
+  100% { left: 100%; }
+}
+
+/* নিয়ন বর্ডার এনিমেশন (নিচে একটি সরু রেখা যা গ্লো করবে) */
+.smart-sub-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--neon-glow), var(--neon-purple));
+  transition: all 0.4s ease;
+  transform: translateX(-50%);
+}
+
+.smart-sub-btn:hover::after {
+  width: 80%;
+}
+
+/* 🟢 New: Live View Counter Styling (Glassmorphism & Premium) */
+.live-counter-badge {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 10px 22px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #0f172a;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.live-counter-badge:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+.live-dot {
+    width: 10px;
+    height: 10px;
+    background-color: #ef4444;
+    border-radius: 50%;
+    animation: pulse-red 1.5s infinite;
+}
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+@media (max-width: 600px) {
+    .live-counter-badge { left: 20px; bottom: 20px; font-size: 14px; padding: 8px 18px; }
+}
+    </style>
+</head>
+<body>
+
+
+
+
+
+
+<style>
+  /* প্রিমিয়াম ডার্ক মেমরি থিম */
+  #splash-screen {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100vh;
+    background: radial-gradient(circle at center, #1f2937 0%, #030712 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s ease;
+  }
+
+  .fade-out {
+    opacity: 0;
+    transform: scale(1.1); /* যাওয়ার সময় হালকা জুম-ইন ইফেক্ট */
+    pointer-events: none;
+  }
+
+  .animation-wrapper { 
+    text-align: center; 
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ব্যাকগ্রাউন্ডের মায়াবী আলো */
+  .memory-glow {
+    position: absolute;
+    top: 40%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.12) 0%, transparent 60%);
+    border-radius: 50%;
+    z-index: -1;
+    animation: pulseGlow 3s infinite ease-in-out;
+  }
+
+  /* ছবি দেখানোর প্রিমিয়াম গ্লাস ফ্রেম */
+  .image-frame {
+    width: 320px;
+    height: 220px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 15px rgba(251, 191, 36, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: #000;
+  }
+
+  /* স্লাইডারের ট্র্যাক - ৫টি ছবির জন্য ৫০০% প্রস্থ */
+  .slider-track {
+    display: flex;
+    width: 500%; 
+    height: 100%;
+    /* ৫ সেকেন্ডের মধ্যে অ্যানিমেশন শেষ হবে */
+    animation: slideMemories 2.5s ease-in-out forwards; 
+  }
+
+  /* প্রতিটি ছবির স্টাইল */
+  .slider-track img {
+    width: 20%; /* ৫০০% এর ২০% = ১০০% (একটি ফ্রেমের সমান) */
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.9) contrast(1.1);
+  }
+
+  /* টেক্সট ডিজাইন */
+  .loading-text { 
+    color: #40f5ff; 
+    margin-top: 5px; 
+    letter-spacing: 3px; 
+    font-family: 'Montserrat', 'Segoe UI', sans-serif; 
+    font-weight: bold;
+    font-size: 1.4rem;
+    text-shadow: 0 0 10px rgba(250, 204, 21, 0.4);
+  }
+
+  /* প্রোগ্রেস বার কন্টেইনার */
+  .progress-container {
+    width: 280px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    margin: 20px auto 0 auto;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+  }
+
+  .progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #ca8a04, #facc15);
+    box-shadow: 0 0 12px #facc15;
+    border-radius: 20px;
+    transition: width 0.05s linear;
+  }
+
+  .percentage-text {
+    color: #facc15;
+    font-family: monospace;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+  }
+
+  /* --- সিনেমাটিক স্লাইড অ্যানিমেশন --- */
+  /* ছবিগুলো ধাপে ধাপে স্লাইড হবে এবং কিছুক্ষণ দাঁড়াবে */
+  @keyframes slideMemories {
+    0%, 15% { transform: translateX(0); }             /* ছবি ১ */
+    20%, 35% { transform: translateX(-20%); }         /* ছবি ২ */
+    40%, 55% { transform: translateX(-40%); }         /* ছবি ৩ */
+    60%, 75% { transform: translateX(-60%); }         /* ছবি ৪ */
+    80%, 100% { transform: translateX(-80%); }        /* ছবি ৫ */
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+   
+
+<div id="splash-screen">
+  <div class="memory-glow"></div>
+  <div class="animation-wrapper">
+    
+    <!-- ছবির ফ্রেম -->
+    <div class="image-frame">
+      <div class="slider-track">
+        <!--  ৫টি ছবির  -->
+        
+        
+        
+        
+        <img src="https://rupshajf.vercel.app/gallery/national-anthem-all-team.webp" alt="Memory 1">
+        <img src="https://rupshajf.vercel.app/gallery/win-team.webp" alt="Memory 2">
+        <img src="https://rupshajf.vercel.app/gallery/lost-team.webp" alt="Memory 3">
+        <img src="https://rupshajf.vercel.app/gallery/team-trophy.webp" alt="Memory 4">
+        
+        
+        <img src="https://rupshajf.vercel.app/gallery/IMG_20260320_234348.jpg" alt="Memory 5">
+      </div>
+    </div>
+
+    <h2 class="loading-text"> আমাদের কার্যক্রম এক নজরে</h2>
+    
+    <div class="progress-container">
+      <div id="progress-bar" class="progress-bar"></div>
+    </div>
+    <span id="percentage" class="percentage-text">0%</span>
+
+  </div>
+</div>
+
+<script>
+  (function() {
+    const progressBar = document.getElementById('progress-bar');
+    const percentageText = document.getElementById('percentage');
+    const splash = document.getElementById('splash-screen');
+
+    // নির্দিষ্ট ৫ সেকেন্ড (5000 মিলিসেকেন্ড) টার্গেট
+    const totalDuration = 3000; 
+    const updateInterval = 50; // প্রতি ৫০ মিলিসেকেন্ডে আপডেট হবে
+    const step = 100 / (totalDuration / updateInterval); 
+    
+    let progress = 0;
+
+    // ৫ সেকেন্ডে ঠিক ১০০% হওয়ার ক্যালকুলেশন
+    const timer = setInterval(() => {
+      progress += step;
+      
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(timer);
+        hideSplashScreen();
+      }
+
+      const currentProgress = Math.floor(progress);
+      progressBar.style.width = currentProgress + '%';
+      percentageText.textContent = currentProgress + '%';
+    }, updateInterval);
+
+    // ৫ সেকেন্ড পার হওয়ার পর স্মুথলি হাইড করার ফাংশন
+    function hideSplashScreen() {
+      splash.classList.add('fade-out');
+      setTimeout(() => {
+        splash.style.display = 'none';
+      }, 800); // অ্যানিমেশন শেষ হতে ৮০০ms সময় নেবে
+    }
+  })();
+</script>
+
+
+
+
+
+
+
+<nav class="ultra-nav">
+  <div class="nav-center">
+    <a href="/subscribe/" class="smart-sub-btn">
+      <span class="btn-content">সাবস্ক্রাইব করুন</span>
+      <div class="shimmer"></div>
+    </a>
+  </div>
+</nav>
+  
+
+
+
+
+
+  
+
+<div id="toastBox"></div>
+
+<div class="modal-overlay" id="thankYouModal">
+    <div class="modal-content">
+        <div class="modal-icon"><i class="fas fa-check"></i></div>
+        <h2 style="color: #0f172a; margin-bottom: 10px;">ধন্যবাদ!</h2>
+        <p style="color: #64748b; font-size: 16px; margin-bottom: 25px;">আপনার মূল্যবান মতামত সফলভাবে জমা হয়েছে।</p>
+        <button class="primary-btn" onclick="closeModal()">ঠিক আছে</button>
+    </div>
+</div>
+
+<div class="review-form">
+    <h2 class="header-title">মতামত ও রিভিউ</h2>
+    <p class="header-subtitle">আপনার মূল্যবান মতামত আমাদের সেবার মান উন্নত করতে সাহায্য করে</p>
+    
+
+
+
+
+
+
+
+
+
+  
+       <!-- Average Rating Summary Section -->
+    <div id="averageRatingSection" class="hidden">
+        <div class="rating-summary-card">
+            <div class="summary-left">
+                <h1 id="avgRatingValue">0.0</h1>
+                <div class="summary-stars" id="avgRatingStars"></div>
+                <p id="totalReviewCount">0টি রিভিউ</p>
+            </div>
+            <div class="summary-right" id="ratingProgressBars">
+                <!-- Bars dynamically generated by JS -->
+            </div>
+        </div>
+    </div>
+    
+    
+    <div id="verifySection" class="verify-box">
+        <div id="emailStep">
+            <p style="color: #64748b; font-size: 16px; margin-bottom: 25px;">রিভিউ প্রদান করতে বা ম্যানেজ করতে ইমেইল ভেরিফাই করুন</p>
+            <div class="input-group">
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="emailInput" class="verify-input" placeholder="আপনার রেজিস্টার্ড ইমেইল অ্যাড্রেস...">
+            </div>
+            <button onclick="verifyEmailDirectly()" id="vBtn" class="primary-btn">
+                এগিয়ে যান <i class="fas fa-arrow-right"></i>
+            </button>
+            
+            <div id="registerPromptBox" class="hidden" style="margin-top: 20px; padding: 20px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 16px; text-align: center;">
+                <h4 style="color: #1e40af; margin: 0 0 8px 0; font-size: 16px;"><i class="fas fa-exclamation-circle"></i> অ্যাকাউন্ট খুঁজে পাওয়া যায়নি!</h4>
+                <p style="color: #3b82f6; font-size: 14px; margin: 0 0 15px 0;">আমাদের সিস্টেমে আপনার ইমেইলটি পাওয়া যায়নি। অনুগ্রহ করে আগে রেজিস্ট্রেশন করুন।</p>
+                <a href="/registration/" style="background: #2563eb; color: white; padding: 12px 24px; border-radius: 12px; font-size: 15px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s;"><i class="fas fa-user-plus"></i> এখনই রেজিস্ট্রেশন করুন</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="authContent" class="hidden">
+        <div id="userInfo" class="user-info"></div>
+        
+        <div id="myExistingReviewBox" class="hidden">
+            <h4 style="margin: 0 0 15px 0; color: #047857; font-size: 16px;"><i class="fas fa-history"></i> আপনার বর্তমান রিভিউ</h4>
+            <div id="myReviewContent" class="review-item my-review-card"></div>
+        </div>
+
+        <div id="reviewInputArea" class="hidden">
+            <div class="rating-container">
+                <span class="rating-label" id="ratingTitle">আপনার অভিজ্ঞতা কেমন ছিল?</span>
+                <div class="star-rating" id="starRating">
+                    <span onclick="setRating(1)"><i class="fas fa-star"></i></span>
+                    <span onclick="setRating(2)"><i class="fas fa-star"></i></span>
+                    <span onclick="setRating(3)"><i class="fas fa-star"></i></span>
+                    <span onclick="setRating(4)"><i class="fas fa-star"></i></span>
+                    <span onclick="setRating(5)"><i class="fas fa-star"></i></span>
+                </div>
+            </div>
+            
+            <textarea id="reviewText" placeholder="আমাদের সার্ভিস সম্পর্কে আপনার মতামত বিস্তারিত লিখুন..."></textarea>
+            
+            <div style="display: flex; gap: 10px;">
+                <button onclick="cancelEdit()" id="cancelBtn" class="primary-btn hidden" style="background: #e2e8f0; color: #475569; width: auto; padding: 16px 25px;">
+                    <i class="fas fa-times"></i> বাতিল
+                </button>
+                <button onclick="submitReview()" class="primary-btn" id="submitBtn">
+                    রিভিউ জমা দিন <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-divider">সকল গ্রাহকের মতামত</div>
+    
+ 
+    
+    <div id="allReviews"></div>
+    
+    <button id="loadMoreBtn" class="load-more-btn hidden" onclick="loadMoreReviews()">আরও দেখুন <i class="fas fa-chevron-down"></i></button>
+</div>
+
+<button id="scrollTopBtn" onclick="scrollToTop()" title="Go to top"><i class="fas fa-chevron-up"></i></button>
+
+<!-- 🟢 New: Live Counter Floating Badge -->
+<div id="liveCounterBadge" class="live-counter-badge hidden">
+    <div class="live-dot"></div>
+    <span id="liveCountText">1 জন লাইভ আছেন</span>
+</div>
+
+<script>
+    // --- Firebase Configurations ---
+    const loginConfig = {
+        apiKey: "AIzaSyD80uA81X3bkwiousPwXpIv6OKkk1k2icA",
+        authDomain: "rjfoundation-25.firebaseapp.com",
+        projectId: "rjfoundation-25",
+        storageBucket: "rjfoundation-25.firebasestorage.app",
+        messagingSenderId: "469641336275",
+        appId: "1:469641336275:web:e79889fb0247f352f04b26"
+    };
+    const loginApp = firebase.initializeApp(loginConfig);
+    const auth = firebase.auth(loginApp);
+
+    const reviewConfig = {
+        apiKey: "AIzaSyDC0H-DW3avFnMRmipaI3qSyYLnb2B3CEU",
+        authDomain: "rating-revieww.firebaseapp.com",
+        projectId: "rating-revieww",
+        appId: "1:936802340652:web:9283ff8a9ffcbee6686689"
+    };
+    const reviewApp = firebase.initializeApp(reviewConfig, "ReviewProject");
+    const db = firebase.firestore(reviewApp);
+
+    // --- State Variables ---
+    let currentUserData = null;
+    let selectedRating = 5;
+    let existingReviewId = null; 
+    let existingReviewData = null;
+    let currentLimit = 5; 
+    let unsubscribeReviews = null;
+
+    // --- Premium Toast Function ---
+    function showToast(message, type = "success") {
+        const toastBox = document.getElementById('toastBox');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        let icon = type === 'error' ? "fa-exclamation-circle" : (type === 'info' ? "fa-info-circle" : "fa-check-circle");
+        toast.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
+        toastBox.appendChild(toast);
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3500);
+    }
+
+    // --- Star Rating Logic ---
+    function setRating(n) {
+        selectedRating = n;
+        document.querySelectorAll('.star-rating span').forEach((star, index) => {
+            star.classList.toggle('active', index < n);
+        });
+    }
+    setRating(5); 
+
+    function formatDate(timestamp) {
+        if(!timestamp) return "এইমাত্র";
+        const date = timestamp.toDate();
+        return date.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' }) + " | " + date.toLocaleTimeString('bn-BD', {hour: '2-digit', minute:'2-digit'});
+    }
+
+    function getStarsHtml(rating) {
+        return '<i class="fas fa-star"></i>'.repeat(rating) + '<i class="far fa-star" style="color: #e2e8f0;"></i>'.repeat(5 - rating);
+    }
+
+    // --- Direct Email Verification Logic ---
+    async function verifyEmailDirectly() {
+        const email = document.getElementById('emailInput').value.trim();
+        const btn = document.getElementById('vBtn');
+        const registerBox = document.getElementById('registerPromptBox');
+
+        if(!email) { showToast('দয়া করে আপনার ইমেইল প্রদান করুন!', 'error'); return; }
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!emailPattern.test(email)) { 
+            showToast('সঠিক ইমেইল ফরম্যাট ব্যবহার করুন!', 'error'); 
+            return; 
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> চেক করা হচ্ছে...';
+        registerBox.classList.add('hidden');
+
+        try {
+            const methods = await auth.fetchSignInMethodsForEmail(email);
+            if (methods.length > 0) {
+                const namePart = email.split('@')[0];
+                currentUserData = { email: email, name: namePart.charAt(0).toUpperCase() + namePart.slice(1), uid: "verified-user" };
+
+                document.getElementById('verifySection').classList.add('hidden');
+                document.getElementById('authContent').classList.remove('hidden');
+                
+                document.getElementById('userInfo').innerHTML = `
+                    <div class="user-profile-left">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="user-img" alt="User">
+                        <div style="min-width: 0; flex: 1;">
+                            <strong style="font-size: 17px; color:#0f172a; display:block; margin-bottom:2px; word-break: break-word; white-space: normal;">${currentUserData.name}</strong>
+                            <span style="font-size: 13px; color: #059669; font-weight: 600;"><i class="fas fa-check-circle"></i> ভেরিফাইড ইউজার</span>
+                        </div>
+                    </div>
+                    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> লগআউট</button>
+                `;
+
+                showToast('লগইন সফল হয়েছে!', 'success');
+                checkExistingReview(email);
+
+            } else {
+                showToast('এই ইমেইলটি আমাদের সিস্টেমে নেই।', 'error');
+                btn.disabled = false;
+                btn.innerHTML = 'আবার চেষ্টা করুন <i class="fas fa-redo"></i>';
+                registerBox.classList.remove('hidden');
+            }
+        } catch (err) {
+            showToast('নেটওয়ার্ক সমস্যা বা ইমেইল সঠিক নয়!', 'error');
+            btn.disabled = false;
+            btn.innerHTML = 'এগিয়ে যান <i class="fas fa-arrow-right"></i>';
+        }
+    }
+
+    // --- Logout ---
+    function logout() {
+        currentUserData = null; existingReviewId = null; existingReviewData = null;
+        document.getElementById('emailInput').value = '';
+        
+        document.getElementById('emailStep').classList.remove('hidden');
+        document.getElementById('registerPromptBox').classList.add('hidden');
+        const btn = document.getElementById('vBtn');
+        btn.disabled = false;
+        btn.innerHTML = 'এগিয়ে যান <i class="fas fa-arrow-right"></i>';
+        
+        document.getElementById('authContent').classList.add('hidden');
+        document.getElementById('verifySection').classList.remove('hidden');
+        showToast('সফলভাবে লগআউট হয়েছেন', 'info');
+    }
+
+    // --- Check Existing Review ---
+    async function checkExistingReview(email) {
+        try {
+            const snapshot = await db.collection("reviews").where("userEmail", "==", email).limit(1).get();
+            if (!snapshot.empty) {
+                const doc = snapshot.docs[0];
+                existingReviewId = doc.id;
+                existingReviewData = doc.data();
+                showMyReviewCard();
+            } else {
+                existingReviewId = null;
+                document.getElementById('myExistingReviewBox').classList.add('hidden');
+                document.getElementById('reviewInputArea').classList.remove('hidden');
+                document.getElementById('ratingTitle').innerText = "আপনার অভিজ্ঞতা কেমন ছিল?";
+                document.getElementById('submitBtn').innerHTML = 'রিভিউ জমা দিন <i class="fas fa-paper-plane"></i>';
+                setRating(5); document.getElementById('reviewText').value = "";
+            }
+        } catch (err) { showToast('ডেটা লোড করতে সমস্যা হচ্ছে!', 'error'); }
+    }
+
+    function showMyReviewCard() {
+        document.getElementById('reviewInputArea').classList.add('hidden');
+        const contentArea = document.getElementById('myReviewContent');
+        const initial = existingReviewData.userName.charAt(0).toUpperCase();
+        
+        contentArea.innerHTML = `
+            <div class="review-header">
+                <div class="reviewer-profile">
+                    <div class="reviewer-avatar">${initial}</div>
+                    <div class="review-name-box">
+                        <span class="review-name">${existingReviewData.userName}</span>
+                        <small style="color:#10b981; font-size:12px; font-weight:600;">আমার রিভিউ</small>
+                    </div>
+                </div>
+                <span class="review-stars">${getStarsHtml(existingReviewData.rating)}</span>
+            </div>
+            <p class="review-text">${existingReviewData.comment}</p>
+            <small class="review-date"><i class="far fa-clock"></i> ${formatDate(existingReviewData.timestamp)}</small>
+            <div class="action-buttons">
+                <button onclick="startEdit()" class="btn-action btn-edit"><i class="fas fa-pen"></i> এডিট করুন</button>
+                <button onclick="deleteReview()" class="btn-action btn-delete"><i class="fas fa-trash"></i> মুছে ফেলুন</button>
+            </div>
+        `;
+        document.getElementById('myExistingReviewBox').classList.remove('hidden');
+    }
+
+    function startEdit() {
+        document.getElementById('myExistingReviewBox').classList.add('hidden');
+        document.getElementById('reviewInputArea').classList.remove('hidden');
+        document.getElementById('ratingTitle').innerText = "আপনার রিভিউ আপডেট করুন";
+        document.getElementById('submitBtn').innerHTML = 'আপডেট করুন <i class="fas fa-sync-alt"></i>';
+        document.getElementById('cancelBtn').classList.remove('hidden');
+        setRating(existingReviewData.rating);
+        document.getElementById('reviewText').value = existingReviewData.comment;
+    }
+
+    function cancelEdit() { document.getElementById('cancelBtn').classList.add('hidden'); showMyReviewCard(); }
+
+    async function deleteReview() {
+        if(confirm("আপনি কি নিশ্চিত যে আপনার রিভিউটি মুছে ফেলতে চান?")) {
+            try {
+                await db.collection('reviews').doc(existingReviewId).delete();
+                showToast('রিভিউ সফলভাবে মুছে ফেলা হয়েছে!', 'success');
+                existingReviewId = null; existingReviewData = null;
+                checkExistingReview(currentUserData.email);
+            } catch (err) { showToast('মুছে ফেলতে সমস্যা হয়েছে!', 'error'); }
+        }
+    }
+
+    // --- Modal Logic ---
+    function showModal() { document.getElementById('thankYouModal').classList.add('show'); }
+    function closeModal() { document.getElementById('thankYouModal').classList.remove('show'); }
+
+    // --- Submit / Update Review ---
+    async function submitReview() {
+        const text = document.getElementById('reviewText').value.trim();
+        const submitBtn = document.getElementById('submitBtn');
+
+        if(!text) { showToast('দয়া করে আপনার মতামত বক্সে লিখুন!', 'error'); document.getElementById('reviewText').focus(); return; }
+
+        submitBtn.disabled = true;
+        const isUpdating = existingReviewId !== null;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> সেভ হচ্ছে...';
+
+        const payload = {
+            uid: currentUserData.uid, userName: currentUserData.name, userEmail: currentUserData.email,
+            rating: selectedRating, comment: text, timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        try {
+            if (isUpdating) {
+                await db.collection("reviews").doc(existingReviewId).update(payload);
+                showToast('রিভিউ সফলভাবে আপডেট হয়েছে!', 'success');
+            } else {
+                await db.collection("reviews").add(payload);
+                showModal(); 
+            }
+            document.getElementById('cancelBtn').classList.add('hidden');
+            checkExistingReview(currentUserData.email);
+        } catch (err) {
+            showToast('সেভ করতে সমস্যা হয়েছে! আবার চেষ্টা করুন।', 'error');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = isUpdating ? 'আপডেট করুন <i class="fas fa-sync-alt"></i>' : 'রিভিউ জমা দিন <i class="fas fa-paper-plane"></i>';
+        }
+    }
+
+    // --- Skeleton Loading UI ---
+    function showSkeleton() {
+        const container = document.getElementById('allReviews');
+        let html = '';
+        for(let i=0; i<3; i++) {
+            html += `
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer-profile"><div class="skeleton skeleton-avatar"></div><div style="flex:1"><div class="skeleton skeleton-text short"></div><div class="skeleton skeleton-text" style="width: 20%"></div></div></div>
+                    </div>
+                    <div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text short"></div>
+                </div>`;
+        }
+        container.innerHTML = html;
+    }
+
+    // --- Emoji Reaction Logic ---
+    async function toggleReaction(docId, type) {
+        try {
+            let userId = currentUserData ? currentUserData.email : localStorage.getItem('rj_guest_id');
+            if (!userId) {
+                userId = 'guest_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('rj_guest_id', userId);
+            }
+
+            const docRef = db.collection("reviews").doc(docId);
+            const docData = await docRef.get();
+            if(docData.exists) {
+                let data = docData.data();
+                let reactions = data.reactions || { helpful: 0, love: 0 };
+                let reactedUsers = data.reactedUsers || { helpful: [], love: [] };
+                
+                if (!reactedUsers.helpful) reactedUsers.helpful = [];
+                if (!reactedUsers.love) reactedUsers.love = [];
+
+                const hasReacted = reactedUsers[type].includes(userId);
+
+                if (hasReacted) {
+                    reactedUsers[type] = reactedUsers[type].filter(id => id !== userId);
+                    reactions[type] = Math.max(0, (reactions[type] || 0) - 1);
+                } else {
+                    reactedUsers[type].push(userId);
+                    reactions[type] = (reactions[type] || 0) + 1;
+                }
+
+                await docRef.update({ 
+                    reactions: reactions,
+                    reactedUsers: reactedUsers
+                });
+            }
+        } catch(e) { console.log("Reaction error", e); }
+    }
+
+    // --- Calculate Average Rating Summary ---
+    function calculateAverageStats() {
+        db.collection("reviews").onSnapshot(snapshot => {
+            const summarySection = document.getElementById('averageRatingSection');
+            
+            if (snapshot.empty) {
+                summarySection.classList.add('hidden');
+                return;
+            }
+            
+            summarySection.classList.remove('hidden');
+            
+            let totalStars = 0;
+            let totalReviews = snapshot.docs.length;
+            let counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+            
+            snapshot.forEach(doc => {
+                let rating = doc.data().rating || 0;
+                if(rating >= 1 && rating <= 5) {
+                    counts[rating]++;
+                    totalStars += rating;
+                }
+            });
+            
+            // Calculate Average
+            let avg = (totalStars / totalReviews).toFixed(1);
+            document.getElementById('avgRatingValue').innerText = avg;
+            document.getElementById('totalReviewCount').innerText = `${totalReviews}টি রিভিউ`;
+            
+            // Generate Stars for Average (Including Half Stars)
+            let fullStars = Math.floor(avg);
+            let halfStar = (avg - fullStars) >= 0.5 ? 1 : 0;
+            let emptyStars = 5 - fullStars - halfStar;
+            
+            let starsHtml = '<i class="fas fa-star"></i>'.repeat(fullStars) + 
+                            (halfStar ? '<i class="fas fa-star-half-alt"></i>' : '') + 
+                            '<i class="far fa-star" style="color: #e2e8f0;"></i>'.repeat(emptyStars);
+            document.getElementById('avgRatingStars').innerHTML = starsHtml;
+            
+            // Generate Progress Bars
+            let barsHtml = '';
+            for(let i = 5; i >= 1; i--) {
+                let percent = totalReviews > 0 ? ((counts[i] / totalReviews) * 100).toFixed(0) : 0;
+                barsHtml += `
+                    <div class="rating-bar-row">
+                        <div class="bar-label">${i} <i class="fas fa-star"></i></div>
+                        <div class="progress-track">
+                            <div class="progress-fill" style="width: ${percent}%"></div>
+                        </div>
+                        <div class="bar-percent">${percent}%</div>
+                    </div>
+                `;
+            }
+            document.getElementById('ratingProgressBars').innerHTML = barsHtml;
+        });
+    }
+
+    // --- Load All Reviews with Pagination ---
+    function loadReviews() {
+        if(currentLimit === 5) showSkeleton(); 
+
+        if(unsubscribeReviews) unsubscribeReviews();
+
+        unsubscribeReviews = db.collection("reviews").orderBy("timestamp", "desc").limit(currentLimit).onSnapshot(snapshot => {
+            const reviewsContainer = document.getElementById('allReviews');
+            const loadBtn = document.getElementById('loadMoreBtn');
+            
+            if (snapshot.empty) {
+                reviewsContainer.innerHTML = '<p style="text-align: center; color: #94a3b8; font-size:16px;">এখনো কোনো রিভিউ নেই। আপনিই প্রথম রিভিউ দিন!</p>';
+                loadBtn.classList.add('hidden');
+                return;
+            }
+
+            let html = "";
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const docId = doc.id;
+                const initial = data.userName ? data.userName.charAt(0).toUpperCase() : 'U';
+                
+                const reactions = data.reactions || { helpful: 0, love: 0 };
+                const reactedUsers = data.reactedUsers || { helpful: [], love: [] };
+                
+                let currentUserId = currentUserData ? currentUserData.email : localStorage.getItem('rj_guest_id');
+                if (!currentUserId) {
+                    currentUserId = 'guest_' + Math.random().toString(36).substr(2, 9);
+                    localStorage.setItem('rj_guest_id', currentUserId);
+                }
+                
+                const hasReactedHelpful = reactedUsers.helpful && reactedUsers.helpful.includes(currentUserId);
+                const hasReactedLove = reactedUsers.love && reactedUsers.love.includes(currentUserId);
+
+                const helpfulBtnClass = hasReactedHelpful ? 'reaction-btn active-helpful' : 'reaction-btn';
+                const loveBtnClass = hasReactedLove ? 'reaction-btn active-love' : 'reaction-btn';
+
+                const helpfulIcon = hasReactedHelpful ? 'fas fa-thumbs-up' : 'far fa-thumbs-up';
+                const loveIcon = hasReactedLove ? 'fas fa-heart' : 'far fa-heart';
+                
+                const adminReplyHTML = data.adminReply ? `
+                    <div class="admin-reply-box">
+                        <strong style="display: flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-check-circle" style="color: #3b82f6;"></i> RJ Foundation Team 
+                            <span style="background: #e0f2fe; color: #0284c7; font-size: 11px; padding: 2px 8px; border-radius: 10px; letter-spacing: 0.5px;">Official</span>
+                        </strong>
+                        ${data.adminReply}
+                    </div>
+                ` : '';
+
+                html += `
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-profile">
+                                <div class="reviewer-avatar">${initial}</div>
+                                <div class="review-name-box"><span class="review-name">${data.userName}</span></div>
+                            </div>
+                            <span class="review-stars">${getStarsHtml(data.rating)}</span>
+                        </div>
+                        <p class="review-text">${data.comment}</p>
+                        ${adminReplyHTML}
+                        
+                        <div class="reaction-bar">
+                            <button class="${helpfulBtnClass}" onclick="toggleReaction('${docId}', 'helpful')"><i class="${helpfulIcon}"></i> Helpful ${reactions.helpful > 0 ? `(${reactions.helpful})` : ''}</button>
+                            <button class="${loveBtnClass}" onclick="toggleReaction('${docId}', 'love')"><i class="${loveIcon}"></i> Love ${reactions.love > 0 ? `(${reactions.love})` : ''}</button>
+                        </div>
+                        <small class="review-date" style="margin-top:10px;"><i class="far fa-clock"></i> ${formatDate(data.timestamp)}</small>
+                    </div>
+                `;
+            });
+            reviewsContainer.innerHTML = html;
+
+            if(snapshot.docs.length >= currentLimit) { loadBtn.classList.remove('hidden'); } 
+            else { loadBtn.classList.add('hidden'); }
+        });
+    }
+
+    function loadMoreReviews() {
+        currentLimit += 5;
+        loadReviews();
+    }
+    
+    // Initialize Stats & Reviews
+    calculateAverageStats();
+    loadReviews();
+
+    // --- Scroll to Top Logic ---
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+    window.onscroll = function() {
+        scrollTopBtn.classList.toggle("show", document.body.scrollTop > 350 || document.documentElement.scrollTop > 350);
+    };
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+  const btn = document.querySelector('.smart-sub-btn');
+
+btn.addEventListener('mouseenter', () => {
+  // হ্যাপটিক ভাইব্রেশন সিমুলেশন (ঐচ্ছিক)
+  if (window.navigator.vibrate) {
+    window.navigator.vibrate(10);
+  }
+});
+
+// স্ক্রল করলে বাটনটি হালকা ছোট হবে যাতে বিরক্তিকর না লাগে
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 100) {
+    btn.style.transform = 'scale(0.9)';
+    btn.style.opacity = '0.8';
+  } else {
+    btn.style.transform = 'scale(1)';
+    btn.style.opacity = '1';
+  }
+});
+
+
+    // 🟢 New: Live Active Users Counter Logic (Firestore Base)
+    const myLiveSessionId = 'live_' + Math.random().toString(36).substr(2, 9) + Date.now();
+    const liveVisitorsRef = db.collection('live_visitors').doc(myLiveSessionId);
+    
+    // Add current user to live count database
+    liveVisitorsRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() }).catch(e => console.log(e));
+
+    // Keep session alive while they are on the page (update every 1 minute)
+    setInterval(() => {
+        liveVisitorsRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() }).catch(e => console.log(e));
+    }, 60000);
+
+    // Remove user from live count when they close/leave the page
+    window.addEventListener('beforeunload', () => {
+        liveVisitorsRef.delete();
+    });
+
+    // Real-time listener for all active users
+    db.collection('live_visitors').onSnapshot(snapshot => {
+        const activeCount = snapshot.docs.length;
+        const liveBadge = document.getElementById('liveCounterBadge');
+        const liveText = document.getElementById('liveCountText');
+        
+        if(liveBadge) {
+            liveBadge.classList.remove('hidden');
+            liveText.innerText = activeCount + ' জন লাইভ আছেন';
+        }
+        
+        // Smart Cleanup: Delete stale sessions (older than 2 minutes) left by crashed browsers
+        const nowTime = Date.now();
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            if(data.timestamp) {
+                const docTime = data.timestamp.toDate().getTime();
+                if(nowTime - docTime > 120000) { 
+                     db.collection('live_visitors').doc(doc.id).delete();
+                }
+            }
+        });
+    });
+
+</script>
+
+
+
+
+
+
+
+
+
+  <style>
+    #ultra-promax-snow {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        pointer-events: none !important; /* ক্লিকে কোনো সমস্যা করবে না */
+        z-index: 2147483647 !important;  /* ওয়েবসাইটের সবকিছুর ওপরে থাকবে */
+        background: transparent !important;
+    }
+</style>
+
+<canvas id="ultra-promax-snow"></canvas>
+
+<script>
+(function() {
+    const canvas = document.getElementById('ultra-promax-snow');
+    const ctx = canvas.getContext('2d');
+    
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    // পারফরম্যান্স ও প্রিমিয়াম লুকের জন্য স্মার্ট পার্টিকেল কাউন্ট
+    const maxParticles = width < 768 ? 40 : 80; 
+    let particles = [];
+
+    // মাউস ফিজিক্স
+    const mouse = { x: -1000, y: -1000, radius: 180 };
+
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+
+    window.addEventListener('mouseout', () => {
+        mouse.x = -1000;
+        mouse.y = -1000;
+    });
+
+    window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    });
+
+    // গ্লোবাল উইন্ড ফিজিক্স (প্রাকৃতিক বাতাস)
+    let windTime = 0;
+
+    class UltraPremiumSnow {
+        constructor() {
+            this.reset(true);
+        }
+
+        reset(isInitial = false) {
+            this.x = Math.random() * width;
+            this.y = isInitial ? Math.random() * height : -20;
+            
+            // সাইজ: 3D লুকের জন্য একটু ভেরিয়েশন (1px থেকে 3.5px)
+            this.baseRadius = Math.random() * 2.5 + 1;
+            this.radius = this.baseRadius;
+            
+            // স্পিড এবং ফিজিক্স
+            this.speedY = (Math.random() * 1.5 + 0.5) * (this.baseRadius * 0.4); 
+            this.speedX = Math.random() * 1 - 0.5;
+            this.wobble = Math.random() * Math.PI * 2;
+            this.wobbleSpeed = Math.random() * 0.02 + 0.01;
+            
+            // আল্ট্রা-প্রিমিয়াম গ্লো এর জন্য অপাসিটি
+            this.baseOpacity = Math.random() * 0.5 + 0.4;
+            this.opacity = this.baseOpacity;
+        }
+
+        update() {
+            // প্রাকৃতিক দুলুনি (Wobble) এবং গ্লোবাল বাতাস
+            this.wobble += this.wobbleSpeed;
+            const globalWind = Math.sin(windTime) * 0.5;
+            
+            this.y += this.speedY;
+            this.x += this.speedX + Math.cos(this.wobble) * 0.5 + globalWind;
+
+            // স্মুথ মাউস রিপালশন (Fluid Dynamics)
+            const dx = this.x - mouse.x;
+            const dy = this.y - mouse.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < mouse.radius) {
+                const force = (mouse.radius - distance) / mouse.radius;
+                // মাউসের ধাক্কায় স্মুথলি দূরে সরা
+                this.x += (dx / distance) * force * 4;
+                this.y += (dy / distance) * force * 4;
+                
+                // মাউসের কাছাকাছি এলে কণাগুলো একটু বেশি গ্লো করবে
+                this.opacity = Math.min(1, this.baseOpacity + force);
+            } else {
+                this.opacity = this.baseOpacity;
+            }
+
+            // নিচে যাওয়ার সময় ধীরে ধীরে ফেড-আউট হওয়া
+            const distanceFromBottom = height - this.y;
+            if (distanceFromBottom < 100) {
+                this.opacity = this.baseOpacity * (distanceFromBottom / 100);
+            }
+
+            // স্ক্রিনের বাইরে গেলে রিসেট
+            if (this.y > height || this.x < -50 || this.x > width + 50) {
+                this.reset(false);
+            }
+        }
+
+        draw() {
+            // 3D Radial Gradient (আল্ট্রা প্রিমিয়াম আইস-ব্লু লুক)
+            const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 2);
+            
+            // মাঝখানে খাঁটি সাদা গ্লো
+            gradient.addColorStop(0, `rgba(255, 255, 255, ${this.opacity})`);
+            // চারপাশে প্রিমিয়াম আইস-ব্লু বা ক্রিস্টাল আভা
+            gradient.addColorStop(0.4, `rgba(180, 225, 255, ${this.opacity * 0.8})`);
+            // শেষে স্বচ্ছ হয়ে যাওয়া
+            gradient.addColorStop(1, `rgba(180, 225, 255, 0)`);
+
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius * 2, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+        }
+    }
+
+    function init() {
+        particles = [];
+        for (let i = 0; i < maxParticles; i++) {
+            particles.push(new UltraPremiumSnow());
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        windTime += 0.005; // বাতাসের গতি পরিবর্তন
+        
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+        }
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+})();
+</script>
+
+
+
+
+
+
+
+
+    <div class="premium-film-grain"></div>
+
+<style>
+    .premium-film-grain {
+        position: fixed !important;
+        /* স্ক্রিনের চেয়ে একটু বড় রাখা হয়েছে যাতে কাঁপলে চারপাশের বর্ডার দেখা না যায় */
+        top: -100px !important;
+        left: -100px !important;
+        width: calc(100vw + 200px) !important;
+        height: calc(100vh + 200px) !important;
+        
+        /* সম্পূর্ণ নিরাপদ: পেছনের কোনো বাটন বা স্ক্রল আটকাতে পারবে না */
+        pointer-events: none !important;
+        z-index: 2147483647 !important; /* সবার ওপরে থাকবে */
+        
+        /* আল্ট্রা-হাই কোয়ালিটি SVG ডিজিটাল নয়েজ */
+        background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.80" numOctaves="4" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E') !important;
+        
+        /* প্রিমিয়াম ব্লেন্ডিং: ডার্ক এবং লাইট উভয় থিমেই এটি কালারের সাথে নিজেকে মানিয়ে নেবে */
+        mix-blend-mode: overlay !important; 
+        
+        /* তীব্রতা: ০.০৪ হলো একদম ইন্টারন্যাশনাল স্ট্যান্ডার্ড (খুবই সূক্ষ্ম ও এলিগেন্ট) */
+        opacity: 0.06 !important; 
+        
+        /* হার্ডওয়্যার বুস্ট (GPU ব্যবহার করবে, ফলে ব্রাউজার ল্যাগ করবে না) */
+        will-change: transform;
+        
+        /* ২৪ ফ্রেমের সিনেমাটিক মোশন অ্যানিমেশন */
+        animation: cinematic-jitter 0.3s steps(6) infinite !important;
+    }
+
+    /* 🎬 মুভি থিয়েটারের মতো র্যান্ডম জিটারিং ইফেক্ট */
+    @keyframes cinematic-jitter {
+        0% { transform: translate(0, 0); }
+        10% { transform: translate(-1%, -1%); }
+        20% { transform: translate(-2%, 1%); }
+        30% { transform: translate(1%, -2%); }
+        40% { transform: translate(-1%, 3%); }
+        50% { transform: translate(-2%, 1%); }
+        60% { transform: translate(2%, 0%); }
+        70% { transform: translate(0%, 2%); }
+        80% { transform: translate(3%, 1%); }
+        90% { transform: translate(-1%, 1%); }
+        100% { transform: translate(0, 0); }
+    }
+</style>
+
+
+</body>
+</html>

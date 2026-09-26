@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>রূপসা জনকল্যাণ ফাউন্ডেশন | দান করুন</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/png" href="favicon.png">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rupshajf.vercel.app/donate">
+<meta property="og:title" content="রূপসা জনকল্যাণ ফাউন্ডেশন | মুক্ত হস্তে দান করুন">
+<meta property="og:description" content="অসহায় ও দরিদ্র মানুষের পাশে দাঁড়িয়ে একটি সুন্দর ও মানবিক সমাজ গড়ে তোলাই আমাদের লক্ষ্য। আমাদের কার্যক্রমে যুক্ত হোন বা অবদান রাখুন।">
+<meta property="og:image" content="meta-banner.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="রূপসা জনকল্যাণ ফাউন্ডেশন">
+<meta name="twitter:description" content="অসহায় ও দরিদ্র মানুষের পাশে দাঁড়িয়ে একটি সুন্দর ও মানবিক সমাজ গড়ে তোলাই আমাদের লক্ষ্য।">
+<meta name="twitter:image" content="meta-banner.png">
+</head>
+<body>
+
+<!-- Top bar -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <img src="/rupsha_jonokollan_foundation.webp" alt="রূপসা জনকল্যাণ ফাউন্ডেশন লোগো" class="logo-img">
+    <div>
+      <h1>রূপসা জনকল্যাণ ফাউন্ডেশন</h1>
+      <span>দান করুন — বিশ্বাসের সাথে</span>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <button class="icon-btn" id="themeBtn" onclick="toggleDarkMode()" aria-label="থিম পরিবর্তন করুন"><i class="fas fa-moon"></i></button>
+    <button class="icon-btn" onclick="toggleSideMenu()" aria-label="মেনু খুলুন"><i class="fas fa-bars"></i></button>
+  </div>
+</header>
+
+<!-- Side menu -->
+<div class="menu-overlay" id="overlay" onclick="toggleSideMenu()"></div>
+<nav class="side-menu" id="sideMenu" aria-label="প্রধান মেনু">
+  <div class="side-menu-header">
+    <strong>রূপসা জনকল্যাণ</strong>
+    <small>ফাউন্ডেশন</small>
+  </div>
+  <a href="/index.html"><i class="fas fa-home"></i> Home</a>
+  <a href="/donate/"><i class="fas fa-hand-holding-heart"></i> Donate</a>
+  <a href="/member/"><i class="fas fa-users"></i> Permanent member</a>
+  <a href="/verify.html"><i class="fa-solid fa-magnifying-glass"></i> Member verify</a>
+  <a href="/from/"><i class="fa-solid fa-file-lines"></i> Application form</a>
+  <a href="/meeting/"><i class="fas fa-video"></i> Meeting</a>
+  <a href="/pro.exam/"><i class="fas fa-graduation-cap"></i> Student portal</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero-strip">
+  <p class="kicker">সকলে মিলে দারিদ্র্যমুক্ত বাংলাদেশ গড়ি</p>
+  <h2>আপনার একটি দান, একটি মানুষের প্রাণ বাঁচাতে পারে</h2>
+  <p>আপনার দান করার আগ্রহ দেখে আমরা আনন্দিত। নিচের নাম্বারে টাকা পাঠিয়ে ফর্মটি সঠিকভাবে পূরণ করুন — আপনার তথ্য যাচাই করে ইমেইলে জানানো হবে।</p>
+</section>
+
+<!-- Donation card -->
+<main class="dashboard-main">
+  <div class="donation-card">
+
+    <div id="successOverlay">
+      <div class="badge-ring"><i class="fa-solid fa-check"></i></div>
+      <h2>ধন্যবাদ, আপনার দান সম্পন্ন হয়েছে</h2>
+      <p>আপনার তথ্যটি যাচাই করে ইমেইলের মাধ্যমে জানানো হবে। রূপসা জনকল্যাণ ফাউন্ডেশনের সাথেই থাকুন।</p>
+      <button class="copy-btn" onclick="resetForm()">সম্পন্ন</button>
+    </div>
+
+    <h2 class="card-title">দানের পদ্ধতি</h2>
+
+    <div class="pay-panel">
+      <span class="label">bKash / Nagad / Rocket (Personal)</span>
+      <span class="number" id="targetNum">01521748116</span>
+      <button class="copy-btn" id="copyBtn" onclick="copyNumber()">নাম্বার কপি করুন</button>
+    </div>
+
+    <p class="subtitle">আপনার ফরমটি ভবিষ্যতের জন্য রেকর্ড করা হবে। অনুগ্রহ করে সঠিক তথ্য দিন।</p>
+
+    <form id="donateForm" novalidate>
+      <!-- honeypot: invisible to people, bots tend to fill every field -->
+      <div class="hp-field" aria-hidden="true">
+        <label for="website">Website</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="field-group has-icon">
+        <input type="text" id="n" placeholder="Name (English)" required>
+        <i class="fa-solid fa-user field-icon"></i>
+        <div class="error-hint">⚠️ Give your correct name.</div>
+      </div>
+
+      <div class="field-group has-icon">
+        <input type="email" id="e" placeholder="Email Address" required>
+        <i class="fa-solid fa-envelope field-icon"></i>
+        <div class="error-hint">⚠️ Enter a valid email.</div>
+      </div>
+
+      <div class="amount-options">
+        <button type="button" class="amt-btn" data-amt="100">১০০৳</button>
+        <button type="button" class="amt-btn" data-amt="500">৫০০৳</button>
+        <button type="button" class="amt-btn" data-amt="1000">১০০০৳</button>
+      </div>
+
+      <div class="field-group has-icon">
+        <input type="number" id="a" placeholder="Amount (৳)" required>
+        <i class="fa-solid fa-sack-dollar field-icon"></i>
+        <div class="error-hint">⚠️ Minimum amount is 30 taka.</div>
+      </div>
+
+      <div class="field-group has-icon">
+        <select id="m" required>
+          <option value="" disabled selected>Payment Method</option>
+          <option value="bKash">bKash</option>
+          <option value="Nagad">Nagad</option>
+        </select>
+        <i class="fa-solid fa-wallet field-icon"></i>
+        <div class="error-hint">⚠️ Select a payment method.</div>
+      </div>
+
+      <div class="field-group has-icon">
+        <input type="text" id="tx" placeholder="Transaction ID (TrxID)" required>
+        <i class="fa-solid fa-hashtag field-icon"></i>
+        <i class="fas fa-question-circle trx-guide" id="trxHelp" tabindex="0" role="button" aria-label="TrxID কী তা জানুন"></i>
+        <div class="error-hint">⚠️ পেমেন্ট SMS থেকে TrxID টি দিন।</div>
+      </div>
+
+      <div class="recaptcha-row">
+        <div class="g-recaptcha" data-sitekey="6Ldx_FAtAAAAAGVnWDz3cdQsupcEnylwb_yj4QTo"></div>
+      </div>
+      <div id="recaptcha-error" class="error-hint" style="text-align:center; margin-bottom:10px;">⚠️ দয়া করে রিক্যাপচা পূরণ করুন।</div>
+
+      <button type="submit" class="btn-submit" id="sBtn">
+        <span id="btnText">CONFIRM DONATION</span>
+        <div class="spinner" id="btnSpinner"></div>
+      </button>
+
+      <p class="trust-line"><i class="fa-solid fa-shield-halved"></i> তথ্য নিরাপদে সংরক্ষিত হয় ও সার্ভারে যাচাই করা হয়</p>
+      <p class="footer-msg">পেমেন্ট সম্পন্ন হওয়ার পর অ্যাডমিন ইমেইলের মাধ্যমে তা নিশ্চিত করবেন।</p>
+    </form>
+  </div>
+</main>
+
+<div id="toast">নাম্বারটি কপি করা হয়েছে!</div>
+
+<footer>
+  <p>© <span id="displayYear"></span> All rights reserved with Rupsha Janakalyan Foundation</p>
+</footer>
+
+<script>
+  var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+  Tawk_API.customStyle = { visibility: { desktop: { yOffset: 100 }, mobile: { yOffset: 75 } } };
+  (function () {
+    var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+    s1.async = true;
+    s1.src = 'https://embed.tawk.to/69dbb84d50bab81c348e073d/1jm14fs2g';
+    s1.charset = 'UTF-8';
+    s1.setAttribute('crossorigin', '*');
+    s0.parentNode.insertBefore(s1, s0);
+  })();
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

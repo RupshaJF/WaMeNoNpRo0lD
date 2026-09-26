@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমাদের দাতা সদস্যবৃন্দ - RJ Foundation</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+
+
+
+
+
+
+<link rel="icon" type="image/png" href="favicon.png">
+    
+    
+    <style>
+        :root {
+            --primary: #00796b;
+            --primary-dark: #004d40;
+            --accent: #00c4a7;
+            --gold: linear-gradient(45deg, #ffb300, #ff8f00);
+            --silver: linear-gradient(45deg, #bdc3c7, #95a5a6);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background: #f0f4f7;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* হেডার সেকশন - আধুনিক ওয়েভ ডিজাইন */
+        .donor-header {
+            text-align: center;
+            padding: 100px 20px 140px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            position: relative;
+            clip-path: ellipse(150% 100% at 50% 0%);
+        }
+
+        .donor-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .donor-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: -80px auto 80px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* দাতা কার্ড গ্রিড */
+        .donor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* স্মার্ট কার্ড ডিজাইন */
+        .donor-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 30px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .donor-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .donor-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 30px 60px rgba(0, 121, 107, 0.15);
+            border-color: var(--primary);
+        }
+
+        /* ব্যাজ সিস্টেম */
+        .rank-badge {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 24px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+        .gold-rank { color: #ffb300; }
+        .silver-rank { color: #9e9e9e; }
+        .heart-rank { color: #ff5252; }
+
+        /* প্রোফাইল ইমেজ - প্রিমিয়াম লুক */
+        .img-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+        }
+
+        .donor-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ইমেজের পেছনে বর্ডার এনিমেশন */
+        .img-container::after {
+            content: '';
+            position: absolute;
+            top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--accent), var(--gold));
+            z-index: 1;
+            opacity: 0.3;
+            transition: var(--transition);
+        }
+
+        .donor-card:hover .img-container::after {
+            transform: rotate(180deg);
+            opacity: 1;
+        }
+
+        .donor-name {
+            font-size: 22px;
+            color: #2c3e50;
+            margin: 10px 0;
+            font-weight: 700;
+        }
+
+        .donor-title {
+            font-size: 14px;
+            background: rgba(0, 121, 107, 0.1);
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        /* তথ্য সেকশন */
+        .contribution-info {
+            background: #f8fafb;
+            padding: 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            border-left: 4px solid var(--primary);
+            text-align: left;
+        }
+
+        .contribution-info div {
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .contribution-info strong { color: var(--primary-dark); }
+
+        /* জয়েন সেকশন */
+        .join-donor {
+            margin-top: 80px;
+            text-align: center;
+            padding: 60px 40px;
+            background: white;
+            border-radius: 40px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .join-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 18px 45px;
+            background: var(--gold);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 18px;
+            transition: var(--transition);
+            box-shadow: 0 10px 25px rgba(255, 179, 0, 0.4);
+        }
+
+        .join-btn:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 179, 0, 0.5);
+        }
+
+        /* এনিমেশন কি-ফ্রেম */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* রেসপন্সিভ */
+        @media (max-width: 768px) {
+            .donor-header h1 { font-size: 1.8rem; }
+            .container { margin-top: -60px; }
+        }
+
+        /* শাহাদৎ হোসেনের জন্য ডিফল্ট অবতার */
+        .placeholder-img {
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #999;
+        }
+
+
+
+
+
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
+:root {
+  --neon-glow: #00f2fe;
+  --neon-purple: #4facfe;
+}
+
+/* নেভিগেশন কন্টেইনার - যা বাটনকে মাঝখানে রাখবে */
+.ultra-nav {
+  position: fixed;
+  top: 20px; /* উপর থেকে একটু নিচে ফ্লোটিং স্টাইল */
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  pointer-events: none; /* যাতে পেজের অন্য কিছুতে ক্লিক করতে বাধা না দেয় */
+}
+
+/* স্মার্ট সাবস্ক্রাইব বাটন */
+.smart-sub-btn {
+  pointer-events: auto; /* বাটন ক্লিকযোগ্য করার জন্য */
+  position: relative;
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 100px;
+  color: black;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 1px;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* বাটন হোভার করলে যা হবে */
+.smart-sub-btn:hover {
+  transform: translateY(-5px) scale(1.05);
+  background: #fff;
+  color: #000;
+  box-shadow: 0 15px 40px rgba(79, 172, 254, 0.4);
+  border-color: transparent;
+}
+
+/* শিমার (Shimmer) ইফেক্ট - যা বাটনের ওপর দিয়ে লাইট পাস করবে */
+.shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: all 0.2s;
+  animation: shineLoop 4s infinite linear;
+}
+
+@keyframes shineLoop {
+  0% { left: -100%; }
+  20% { left: 100%; }
+  100% { left: 100%; }
+}
+
+/* নিয়ন বর্ডার এনিমেশন (নিচে একটি সরু রেখা যা গ্লো করবে) */
+.smart-sub-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--neon-glow), var(--neon-purple));
+  transition: all 0.4s ease;
+  transform: translateX(-50%);
+}
+
+.smart-sub-btn:hover::after {
+  width: 80%;
+}
+        
+    </style>
+</head>
+<body>
+
+<nav class="ultra-nav">
+  <div class="nav-center">
+    <a href="/subscribe/" class="smart-sub-btn">
+      <span class="btn-content">সাবস্ক্রাইব করুন</span>
+      <div class="shimmer"></div>
+    </a>
+  </div>
+</nav>
+
+
+
+
+
+
+    
+
+    <header class="donor-header">
+        <h1>আমাদের গর্বিত দাতা সদস্যবৃন্দ</h1>
+        <p>আপনাদের বদান্যতায় আমরা গড়ি এক মানবিক পৃথিবী। আপনাদের প্রতিটি দান আমাদের অনুপ্রেরণা।</p>
+    </header>
+
+    <div class="container">
+        <div class="donor-grid">
+            
+            <div class="donor-card scroll-reveal">
+                <i class="fas fa-crown rank-badge gold-rank"></i>
+                <div class="img-container">
+                    <img src="/member/rafiqul.webp" class="donor-img">
+                </div>
+                <span class="donor-title">Advisor</span>
+                <div class="donor-name">ইঞ্জিনিয়ার রফিকুল ইসলাম</div>
+                <div class="contribution-info">
+                    <div><span>সদস্যকাল:</span> <strong>০৭ মাস</strong></div>
+                    <div><span>অবদান:</span> <strong>ফাউন্ডেশন কার্যক্রম</strong></div>
+                </div>
+            </div>
+
+            <div class="donor-card scroll-reveal">
+                <i class="fas fa-medal rank-badge silver-rank"></i>
+                <div class="img-container">
+                    <img src="/member/harrun.webp" class="donor-img">
+                </div>
+                <span class="donor-title">Advisor</span>
+                <div class="donor-name">হারুনর রশিদ</div>
+                <div class="contribution-info">
+                    <div><span>সদস্যকাল:</span> <strong>০৭ মাস</strong></div>
+                    <div><span>অবদান:</span> <strong>ফাউন্ডেশন কার্যক্রম</strong></div>
+                </div>
+            </div>
+
+            <div class="donor-card scroll-reveal">
+                <i class="fas fa-heart rank-badge heart-rank"></i>
+                <div class="img-container">
+                    <img src="/member/imran_ahmed.webp" class="donor-img">
+                </div>
+                <span class="donor-title">প্রচার সম্পাদক</span>
+                <div class="donor-name">ইমরান আহমেদ</div>
+                <div class="contribution-info">
+                    <div><span>সদস্যকাল:</span> <strong>০৭ মাস</strong></div>
+                    <div><span>অবদান:</span> <strong>ফাউন্ডেশন কার্যক্রম</strong></div>
+                </div>
+            </div>
+
+            <div class="donor-card scroll-reveal">
+                <i class="fas fa-heart rank-badge heart-rank"></i>
+                <div class="img-container">
+                    <img src="/member/siam.webp" class="donor-img">
+                </div>
+                <span class="donor-title">সহ-সভাপতি</span>
+                <div class="donor-name">আবু সিয়াম</div>
+                <div class="contribution-info">
+                    <div><span>সদস্যকাল:</span> <strong>০৭ মাস</strong></div>
+                    <div><span>অবদান:</span> <strong>ফাউন্ডেশন কার্যক্রম</strong></div>
+                </div>
+            </div>
+
+            <div class="donor-card scroll-reveal">
+                <i class="fas fa-heart rank-badge heart-rank"></i>
+                <div class="img-container">
+                    <img src="/member/kamrul.webp" class="donor-img">
+                </div>
+                <span class="donor-title">সহ-সভাপতি</span>
+                <div class="donor-name">কামরুল শেখ</div>
+                <div class="contribution-info">
+                    <div><span>সদস্যকাল:</span> <strong>০৭ মাস</strong></div>
+                    <div><span>অবদান:</span> <strong>ফাউন্ডেশন কার্যক্রম</strong></div>
+                </div>
+            </div>
+
+                    <div class="donor-card scroll-reveal">
+                <i class="fas fa-heart rank-badge heart-rank"></i>
+                <div class="img-container">
+                    <img src="/member/shahadat.webp" class="donor-img">
+                </div>
+                <span class="donor-title">সমাজ সেবা বিষয়ক সম্পাদক</span>
+                <div class="donor-name">শাহাদৎ হোসেন</div>
+                <div class="contribution-info">
+                    <div><span>সদস্যকাল:</span> <strong>০৭ মাস</strong></div>
+                    <div><span>অবদান:</span> <strong>ফাউন্ডেশন কার্যক্রম</strong></div>
+                </div>
+            </div>
+            
+            
+            
+                      <div class="donor-card scroll-reveal">
+                <i class="fas fa-heart rank-badge heart-rank"></i>
+                <div class="img-container">
+                    <img src="/member/kawsar.webp" class="donor-img">
+                </div>
+                <span class="donor-title">সাধারণ সম্পাদক</span>
+                <div class="donor-name">কাওসার আহমেদ</div>
+                <div class="contribution-info">
+                    <div><span>সদস্যকাল:</span> <strong>০৭ মাস</strong></div>
+                    <div><span>অবদান:</span> <strong>ফাউন্ডেশন কার্যক্রম</strong></div>
+                </div>
+            </div>
+
+
+          <div class="donor-card scroll-reveal">
+                <i class="fas fa-heart rank-badge heart-rank"></i>
+                <div class="img-container">
+                    <img src="/member/omor.webp" class="donor-img">
+                </div>
+                <span class="donor-title">সভাপতি</span>
+                <div class="donor-name">ওমর ফারুক</div>
+                <div class="contribution-info">
+                    <div><span>সদস্যকাল:</span> <strong>০৭ মাস</strong></div>
+                    <div><span>অবদান:</span> <strong>ফাউন্ডেশন কার্যক্রম</strong></div>
+                </div>
+            </div>
+
+
+          <div class="donor-card scroll-reveal">
+                <i class="fas fa-heart rank-badge heart-rank"></i>
+                <div class="img-container">
+                    <img src="/member/sumon.webp" class="donor-img">
+                </div>
+                <span class="donor-title">দপ্তর সম্পাদক</span>
+                <div class="donor-name">সুমন আহমেদ</div>
+                <div class="contribution-info">
+                    <div><span>সদস্যকাল:</span> <strong>০৭ মাস</strong></div>
+                    <div><span>অবদান:</span> <strong>ফাউন্ডেশন কার্যক্রম</strong></div>
+                </div>
+            </div>
+
+
+
+          <div class="donor-card scroll-reveal">
+                <i class="fas fa-heart rank-badge heart-rank"></i>
+                <div class="img-container">
+                    <img src="/member/fahim.webp" class="donor-img">
+                </div>
+                <span class="donor-title">সহ-সভাপতি</span>
+                <div class="donor-name">ফাহিম</div>
+                <div class="contribution-info">
+                    <div><span>সদস্যকাল:</span> <strong>০৭ মাস</strong></div>
+                    <div><span>অবদান:</span> <strong>ফাউন্ডেশন কার্যক্রম</strong></div>
+                </div>
+            </div>
+
+
+
+          <div class="donor-card scroll-reveal">
+                <i class="fas fa-heart rank-badge heart-rank"></i>
+                <div class="img-container">
+                    <img src="/member/naim.webp" class="donor-img">
+                </div>
+                <span class="donor-title">সাংগঠনিক সম্পাদক</span>
+                <div class="donor-name">নাঈম</div>
+                <div class="contribution-info">
+                    <div><span>সদস্যকাল:</span> <strong>০৭ মাস</strong></div>
+                    <div><span>অবদান:</span> <strong>ফাউন্ডেশন কার্যক্রম</strong></div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="join-donor">
+            <h2>আমাদের মানবিক যাত্রার অংশীদার হোন</h2>
+            <p>আপনার সামান্য সাহায্য একটি দুস্থ পরিবারের মুখে হাসি ফোটাতে পারে। আজই নিবন্ধন করুন।</p>
+            <a href="/from/" class="join-btn">নিয়মিত দাতা হিসেবে যোগ দিন <i class="fas fa-arrow-right" style="margin-left: 10px;"></i></a>
+        </div>
+    </div>
+
+    <div id="newScrollTop" style="position: fixed; right: 25px; bottom: 25px; background: var(--primary); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; transition: 0.3s; opacity: 0; visibility: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <script>
+        // ১. কার্ড লোডিং এনিমেশন (Intersection Observer)
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.donor-card').forEach(card => observer.observe(card));
+
+        // ২. স্ক্রল টু টপ বাটন
+        const scrollBtn = document.getElementById('newScrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 400) {
+                scrollBtn.style.opacity = "1";
+                scrollBtn.style.visibility = "visible";
+            } else {
+                scrollBtn.style.opacity = "0";
+                scrollBtn.style.visibility = "hidden";
+            }
+        });
+
+        scrollBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // ৩. Tawk.to Chat Integration (আপনার আগের কোডটি রাখা হয়েছে)
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+            s1.async=true;
+            s1.src='https://embed.tawk.to/69dbb84d50bab81c348e073d/1jm14fs2g';
+            s1.charset='UTF-8';
+            s1.setAttribute('crossorigin','*');
+            s0.parentNode.insertBefore(s1,s0);
+        })();
+
+
+
+
+
+
+
+
+const btn = document.querySelector('.smart-sub-btn');
+
+btn.addEventListener('mouseenter', () => {
+  // হ্যাপটিক ভাইব্রেশন সিমুলেশন (ঐচ্ছিক)
+  if (window.navigator.vibrate) {
+    window.navigator.vibrate(10);
+  }
+});
+
+// স্ক্রল করলে বাটনটি হালকা ছোট হবে যাতে বিরক্তিকর না লাগে
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 100) {
+    btn.style.transform = 'scale(0.9)';
+    btn.style.opacity = '0.8';
+  } else {
+    btn.style.transform = 'scale(1)';
+    btn.style.opacity = '1';
+  }
+});
+        
+    </script>
+</body>
+</html>
